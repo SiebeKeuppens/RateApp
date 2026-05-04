@@ -1,11 +1,15 @@
 services:
-  rating-app:
+  cdn_app:
     build:
       context: .
-      dockerfile: Dockerfile
-    ports:
-      - "8080:80"
+    container_name: cdn_app
     restart: unless-stopped
-    # Environment variables for build time are handled in the Dockerfile/Workflow
-    # but runtime ones can go here if needed.
-    container_name: rating-app
+    volumes:
+      - ./storage:/app/storage
+    env_file: .env
+    networks:
+      - web-gateway
+
+networks:
+  web-gateway:
+    external: true

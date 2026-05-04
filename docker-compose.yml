@@ -1,5 +1,5 @@
 services:
-  cdn_app:
+  rating-app:
     build:
       context: .
     container_name: rating-app

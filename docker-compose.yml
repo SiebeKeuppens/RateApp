@@ -1,0 +1,11 @@
+services:
+  rating-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+    # Environment variables for build time are handled in the Dockerfile/Workflow
+    # but runtime ones can go here if needed.
+    container_name: rating-app

@@ -1,0 +1,32 @@
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper function to check admin status
+    function isAdmin() {
+      return request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    // Themes and Objects
+    match /themes/{themeId} {
+      allow read: if true;
+      allow write: if isAdmin();
+      
+      match /rating_objects/{objectId} {
+        allow read: if true;
+        allow write: if isAdmin();
+      }
+    }
+
+    // Ratings
+    match /ratings/{ratingId} {
+      allow read: if true;
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if request.auth != null && resource.data.userId == request.auth.uid;
+    }
+    
+    // Users (Existing)
+    match /users/{userId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && (request.auth.uid == userId || isAdmin());
+    }
+  }
+}

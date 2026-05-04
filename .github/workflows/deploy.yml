@@ -1,0 +1,53 @@
+name: CI/CD - Build and Deploy to Production
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Build & Deploy
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Deploy to Server via SCP
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "./*"
+          target: "~/rating-app"
+          rm: true
+
+      - name: Remote SSH Build and Execution
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd ~/rating-app
+            
+            # Reconstruct the .env file from GitHub Secrets for the Docker build
+            # These are needed at build-time for the Vite frontend
+            cat <<EOF > .env
+            VITE_FIREBASE_API_KEY=${{ secrets.FIREBASE_API_KEY }}
+            VITE_FIREBASE_AUTH_DOMAIN=${{ secrets.FIREBASE_AUTH_DOMAIN }}
+            VITE_FIREBASE_PROJECT_ID=${{ secrets.FIREBASE_PROJECT_ID }}
+            VITE_FIREBASE_STORAGE_BUCKET=${{ secrets.FIREBASE_STORAGE_BUCKET }}
+            VITE_FIREBASE_MESSAGING_SENDER_ID=${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}
+            VITE_FIREBASE_APP_ID=${{ secrets.FIREBASE_APP_ID }}
+            EOF
+            
+            # Force a rebuild of the Docker container with the new env vars
+            docker compose down
+            docker compose up --build -d
+            
+            # Cleanup: remove the temporary .env if desired, 
+            # though it's inside the server's user folder.
+            # rm .env

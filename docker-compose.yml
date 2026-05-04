@@ -2,7 +2,7 @@ services:
   cdn_app:
     build:
       context: .
-    container_name: cdn_app
+    container_name: rating-app
     restart: unless-stopped
     volumes:
       - ./storage:/app/storage

@@ -58,33 +58,33 @@ export const SignInModal: React.FC<SignInModalProps> = ({ isOpen, onClose }) => 
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 animate-in fade-in duration-300">
       <div className="absolute inset-0 bg-background/80 backdrop-blur-sm" onClick={onClose}></div>
       
-      <div className="relative bg-card border border-border shadow-2xl rounded-2xl w-full max-w-md p-10 animate-in zoom-in-95 duration-300">
+      <div className="relative bg-card border shadow-lg rounded-xl w-full max-w-md p-8 animate-in zoom-in-95 duration-300">
         <button 
           onClick={onClose}
-          className="absolute top-6 right-6 text-muted-foreground hover:text-foreground transition-colors"
+          className="absolute top-4 right-4 text-muted-foreground hover:text-foreground transition-colors"
         >
-          <X size={20} />
+          <X size={18} />
         </button>
         
-        <header className="mb-10 text-center">
-          <h2 className="text-3xl font-extralight tracking-tight text-foreground mb-2">{isSignUp ? 'Register' : 'Sign In'}</h2>
-          <p className="text-[10px] text-muted-foreground uppercase tracking-[0.2em] font-bold">
-            {isSignUp ? 'Create a new account' : 'Enter your credentials to proceed'}
+        <header className="mb-8 text-center">
+          <h2 className="text-2xl font-bold tracking-tight mb-2">{isSignUp ? 'Create an account' : 'Login'}</h2>
+          <p className="text-sm text-muted-foreground font-medium">
+            {isSignUp ? 'Enter your details to get started' : 'Enter your credentials to access your account'}
           </p>
         </header>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-4">
           {isSignUp && (
             <div className="space-y-2">
-              <label className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold">Display Name</label>
-              <div className="flex items-center space-x-3 bg-secondary/30 rounded-lg px-4 py-3 focus-within:ring-2 focus-within:ring-primary transition-all group">
-                <User size={16} className="text-muted-foreground group-focus-within:text-primary transition-colors" />
+              <label className="text-sm font-medium leading-none">Display Name</label>
+              <div className="relative">
+                <User size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                 <input 
                   type="text" 
                   placeholder="John Doe"
                   value={displayName}
                   onChange={(e) => setDisplayName(e.target.value)}
-                  className="bg-transparent border-none outline-none w-full text-sm placeholder:text-muted-foreground font-medium"
+                  className="flex h-10 w-full rounded-md border border-input bg-transparent pl-10 pr-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                   required={isSignUp}
                 />
               </div>
@@ -92,58 +92,56 @@ export const SignInModal: React.FC<SignInModalProps> = ({ isOpen, onClose }) => 
           )}
 
           <div className="space-y-2">
-            <label className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold">Email Address</label>
-            <div className="flex items-center space-x-3 bg-secondary/30 rounded-lg px-4 py-3 focus-within:ring-2 focus-within:ring-primary transition-all group">
-              <Mail size={16} className="text-muted-foreground group-focus-within:text-primary transition-colors" />
+            <label className="text-sm font-medium leading-none">Email Address</label>
+            <div className="relative">
+              <Mail size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
               <input 
                 type="email" 
-                placeholder="email@example.com"
+                placeholder="name@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="bg-transparent border-none outline-none w-full text-sm placeholder:text-muted-foreground font-medium"
+                className="flex h-10 w-full rounded-md border border-input bg-transparent pl-10 pr-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 required
               />
             </div>
           </div>
 
           <div className="space-y-2">
-            <label className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold">Password</label>
-            <div className="flex items-center space-x-3 bg-secondary/30 rounded-lg px-4 py-3 focus-within:ring-2 focus-within:ring-primary transition-all group">
-              <Lock size={16} className="text-muted-foreground group-focus-within:text-primary transition-colors" />
+            <label className="text-sm font-medium leading-none">Password</label>
+            <div className="relative">
+              <Lock size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
               <input 
                 type="password" 
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="bg-transparent border-none outline-none w-full text-sm placeholder:text-muted-foreground font-medium"
+                className="flex h-10 w-full rounded-md border border-input bg-transparent pl-10 pr-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 required
               />
             </div>
           </div>
 
           {error && (
-            <div className="p-3 bg-destructive/10 border border-destructive/20 rounded-lg">
-              <p className="text-[10px] text-destructive uppercase tracking-widest text-center font-bold">
-                {error}
-              </p>
-            </div>
+            <p className="text-sm font-medium text-destructive text-center">
+              {error}
+            </p>
           )}
 
-          <div className="space-y-4 pt-4">
+          <div className="space-y-4 pt-2">
             <button 
               type="submit"
               disabled={loading}
-              className="w-full bg-primary text-primary-foreground text-[10px] font-bold uppercase tracking-[0.3em] py-4 rounded-lg hover:opacity-90 transition-all disabled:opacity-50 flex items-center justify-center shadow-lg"
+              className="w-full bg-primary text-primary-foreground h-10 rounded-md font-semibold text-sm shadow hover:bg-primary/90 transition-colors disabled:opacity-50 flex items-center justify-center"
             >
-              {loading ? <Loader2 size={16} className="animate-spin" /> : isSignUp ? 'Create Account' : 'Authenticate'}
+              {loading ? <Loader2 size={16} className="animate-spin" /> : isSignUp ? 'Sign Up' : 'Login'}
             </button>
             
             <button 
               type="button"
               onClick={() => setIsSignUp(!isSignUp)}
-              className="w-full text-[10px] text-muted-foreground uppercase tracking-widest hover:text-primary transition-colors font-bold"
+              className="w-full text-sm text-muted-foreground hover:text-primary transition-colors font-medium"
             >
-              {isSignUp ? 'Already have an account? Sign In' : 'New here? Create an account'}
+              {isSignUp ? 'Already have an account? Login' : 'Don\'t have an account? Sign up'}
             </button>
           </div>
         </form>

@@ -22,17 +22,17 @@ export const ObjectRating: React.FC<ObjectRatingProps> = ({ object, onRate, hasR
   };
 
   return (
-    <div className="glass-panel p-8 flex flex-col items-center group transition-all duration-500">
+    <div className="flex flex-col items-center p-6 rounded-xl border bg-card text-card-foreground shadow-sm transition-all hover:shadow-md">
       <div className="text-center w-full">
-        <h4 className="text-xl font-semibold tracking-tight mb-8">{object.name}</h4>
+        <h4 className="text-lg font-bold tracking-tight mb-6">{object.name}</h4>
         
         {!hasRated ? (
-          <div className="mb-8 space-y-6">
+          <div className="mb-6 space-y-5">
             <div className="flex flex-col items-center">
-              <span className="text-4xl font-bold tracking-tighter mb-2 tabular-nums">
+              <span className="text-4xl font-bold tracking-tight mb-2 tabular-nums">
                 {value.toFixed(1)}
               </span>
-              <div className="h-1 w-8 bg-primary/20 rounded-full"></div>
+              <div className="h-1 w-8 bg-primary rounded-full opacity-20"></div>
             </div>
             
             <input
@@ -42,42 +42,42 @@ export const ObjectRating: React.FC<ObjectRatingProps> = ({ object, onRate, hasR
               step="0.1"
               value={value}
               onChange={(e) => setValue(parseFloat(e.target.value))}
-              className="w-full h-2 bg-secondary rounded-lg appearance-none cursor-pointer accent-primary"
+              className="w-full h-1.5 bg-muted rounded-lg appearance-none cursor-pointer accent-primary"
             />
             
             <button
               onClick={handleRate}
-              className="w-full py-3 bg-primary text-primary-foreground rounded-lg font-semibold text-sm uppercase tracking-widest hover:opacity-90 transition-all active:scale-[0.98]"
+              className="w-full h-10 bg-primary text-primary-foreground rounded-md font-semibold text-sm shadow hover:bg-primary/90 transition-colors"
             >
               Submit Rating
             </button>
           </div>
         ) : (
-          <div className="mb-8 py-6 flex flex-col items-center bg-secondary/30 rounded-xl border border-border/50">
-            <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground mb-2 font-bold">Your Status</span>
-            <div className="flex items-center space-x-2 text-primary font-bold">
-              <Star size={16} className="fill-current" />
+          <div className="mb-6 py-5 flex flex-col items-center bg-muted rounded-lg border border-dashed">
+            <span className="text-[10px] uppercase font-bold text-muted-foreground mb-1">Your Status</span>
+            <div className="flex items-center space-x-2 text-primary font-bold text-sm">
+              <Star size={14} className="fill-current" />
               <span>ALREADY RATED</span>
             </div>
           </div>
         )}
         
-        <div className="grid grid-cols-2 gap-4 border-t border-border pt-6">
+        <div className="grid grid-cols-2 gap-4 border-t pt-5">
           <div className="flex flex-col items-center space-y-1">
             <div className="flex items-center space-x-1 text-muted-foreground">
               <Trophy size={12} />
-              <span className="text-[9px] uppercase tracking-widest font-bold">Score</span>
+              <span className="text-[10px] uppercase font-bold">Score</span>
             </div>
-            <span className="text-lg font-bold tabular-nums">
+            <span className="text-base font-bold tabular-nums">
               {object.rating ? object.rating.toFixed(1) : '0.0'}
             </span>
           </div>
           <div className="flex flex-col items-center space-y-1">
             <div className="flex items-center space-x-1 text-muted-foreground">
               <Users size={12} />
-              <span className="text-[9px] uppercase tracking-widest font-bold">Votes</span>
+              <span className="text-[10px] uppercase font-bold">Votes</span>
             </div>
-            <span className="text-lg font-bold tabular-nums">
+            <span className="text-base font-bold tabular-nums">
               {object.ratingCount || 0}
             </span>
           </div>

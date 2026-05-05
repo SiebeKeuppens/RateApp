@@ -23,56 +23,55 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
-      <nav className="border-b border-border px-8 py-4 flex justify-between items-center bg-background/80 backdrop-blur-md sticky top-0 z-50">
+      <nav className="border-b bg-background px-8 py-3 flex justify-between items-center">
         <h1 
-          className="text-xl tracking-widest font-bold uppercase cursor-pointer flex items-center"
+          className="text-xl font-bold tracking-tight cursor-pointer flex items-center"
           onClick={handleLogoClick}
         >
-          Rating<span className="font-thin text-muted-foreground">App</span>
+          Rating<span className="text-muted-foreground">App</span>
         </h1>
-        <div className="flex items-center space-x-6">
+        <div className="flex items-center space-x-4">
           <button
             onClick={toggleTheme}
-            className="p-2 rounded-full hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground"
+            className="p-2 rounded-md hover:bg-accent transition-colors text-muted-foreground hover:text-foreground"
             title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
           >
             {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
           </button>
 
           {user ? (
-            <div className="flex items-center space-x-6">
+            <div className="flex items-center space-x-4">
               {isAdmin && (
                 <button 
                   onClick={() => setIsAdminView(!isAdminView)}
-                  className="flex items-center space-x-2 text-[10px] uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors"
+                  className="flex items-center space-x-2 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
                 >
                   {isAdminView ? <Layout size={14} /> : <Settings size={14} />}
                   <span>{isAdminView ? 'View Site' : 'Admin'}</span>
                 </button>
               )}
               
-              <div className="flex items-center space-x-4 border-l border-border pl-6">
+              <div className="flex items-center space-x-4 border-l pl-4">
                 <div className="flex flex-col items-end">
-                  <span className="text-xs font-semibold tracking-tight">
+                  <span className="text-xs font-semibold">
                     {profile?.displayName || user.email}
                   </span>
                   {isAdmin && (
-                    <span className="text-[10px] uppercase tracking-widest text-muted-foreground">Admin</span>
+                    <span className="text-[10px] uppercase font-bold text-muted-foreground">Admin</span>
                   )}
                 </div>
                 <button 
                   onClick={() => auth.signOut()}
-                  className="p-2 rounded-full hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground"
-                  title="Sign Out"
+                  className="text-sm font-medium hover:underline text-muted-foreground hover:text-foreground"
                 >
-                  <LogOut size={18} />
+                  Logout
                 </button>
               </div>
             </div>
           ) : (
             <button 
               onClick={() => setIsSignInOpen(true)}
-              className="text-sm font-semibold tracking-widest uppercase border border-input px-6 py-2 hover:bg-primary hover:text-primary-foreground transition-all duration-300 rounded-md"
+              className="text-sm font-medium border px-4 py-2 hover:bg-accent transition-colors rounded-md shadow-sm"
             >
               Sign In
             </button>
@@ -80,7 +79,7 @@ const App: React.FC = () => {
         </div>
       </nav>
 
-      <main className="max-w-6xl mx-auto py-16 px-6">
+      <main className="max-w-6xl mx-auto py-12 px-6">
         {isAdminView ? (
           <AdminGuard>
             <AdminPanel />
@@ -92,10 +91,10 @@ const App: React.FC = () => {
           />
         ) : (
           <>
-            <header className="mb-16 text-center animate-in fade-in slide-in-from-top-4 duration-1000">
-              <h2 className="text-5xl font-extralight tracking-tighter mb-4">Curated Collections</h2>
-              <div className="h-1 w-12 bg-primary mx-auto mb-6 rounded-full"></div>
-              <p className="text-muted-foreground tracking-[0.2em] uppercase text-[10px] font-medium">Explore and rate the exceptional</p>
+            <header className="mb-12 text-center animate-in fade-in duration-700">
+              <h2 className="text-3xl font-bold tracking-tight mb-3">Curated Collections</h2>
+              <div className="h-1 w-12 bg-primary mx-auto mb-4 rounded-full"></div>
+              <p className="text-sm text-muted-foreground font-medium">Explore and rate the exceptional</p>
             </header>
             
             <ThemeList onSelectTheme={(id) => setSelectedThemeId(id)} />

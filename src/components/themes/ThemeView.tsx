@@ -84,16 +84,16 @@ export const ThemeView: React.FC<ThemeViewProps> = ({ themeId, onBack }) => {
     <div className="animate-in fade-in duration-700">
       <button 
         onClick={onBack}
-        className="flex items-center text-[10px] uppercase tracking-[0.2em] text-muted-foreground hover:text-foreground transition-colors mb-12 group font-bold"
+        className="flex items-center text-sm font-medium text-muted-foreground hover:text-foreground transition-colors mb-8 group"
       >
-        <ArrowLeft size={14} className="mr-2 group-hover:-translate-x-1 transition-transform" />
+        <ArrowLeft size={16} className="mr-2 group-hover:-translate-x-1 transition-transform" />
         Back to Collections
       </button>
 
-      <div className="mb-16">
-        <h2 className="text-4xl font-extralight tracking-tighter mb-4">{theme.name}</h2>
-        <div className="h-1 w-12 bg-primary/20 mb-6 rounded-full"></div>
-        <p className="text-muted-foreground font-light max-w-2xl leading-relaxed text-lg">{theme.description}</p>
+      <div className="mb-12">
+        <h2 className="text-3xl font-bold tracking-tight mb-3">{theme.name}</h2>
+        <div className="h-1 w-12 bg-primary/20 mb-4 rounded-full"></div>
+        <p className="text-muted-foreground font-medium max-w-2xl leading-relaxed">{theme.description}</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

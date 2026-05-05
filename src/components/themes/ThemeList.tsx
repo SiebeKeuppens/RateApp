@@ -35,26 +35,26 @@ export const ThemeList: React.FC<ThemeListProps> = ({ onSelectTheme }) => {
           <div 
             key={theme.id} 
             onClick={() => onSelectTheme(theme.id)}
-            className="group glass-panel rounded-xl overflow-hidden hover-glass cursor-pointer flex flex-col h-full"
+            className="group relative flex flex-col h-full rounded-xl border bg-card text-card-foreground shadow-sm transition-all hover:shadow-md cursor-pointer overflow-hidden"
           >
-            <div className="aspect-[16/9] bg-secondary/30 flex items-center justify-center transition-all duration-700 group-hover:bg-secondary/50">
+            <div className="aspect-[16/9] bg-muted/50 flex items-center justify-center transition-all duration-500 group-hover:bg-muted/80">
               <div 
-                className="p-6 rounded-full transition-all duration-700 group-hover:scale-110 shadow-lg"
-                style={{ backgroundColor: `${theme.color || 'currentColor'}22`, color: theme.color || 'currentColor' }}
+                className="p-6 rounded-full transition-all duration-500 group-hover:scale-110 shadow-sm border bg-background"
+                style={{ color: theme.color || 'currentColor' }}
               >
-                <IconComponent size={48} strokeWidth={1.5} />
+                <IconComponent size={40} strokeWidth={2} />
               </div>
             </div>
-            <div className="p-8 flex flex-col flex-grow">
-              <h3 className="text-2xl font-semibold tracking-tight mb-3 group-hover:translate-x-1 transition-transform duration-300">
+            <div className="p-6 flex flex-col flex-grow space-y-3">
+              <h3 className="text-xl font-bold tracking-tight">
                 {theme.name}
               </h3>
-              <p className="text-muted-foreground font-light leading-relaxed mb-8 flex-grow">
+              <p className="text-sm text-muted-foreground leading-relaxed flex-grow">
                 {theme.description}
               </p>
-              <div className="flex items-center text-[10px] uppercase tracking-[0.2em] text-muted-foreground group-hover:text-primary transition-colors font-bold">
+              <div className="flex items-center text-xs font-semibold text-primary/70 group-hover:text-primary transition-colors pt-2">
                 <span>Explore Collection</span>
-                <ChevronRight size={14} className="ml-2 group-hover:translate-x-1 transition-transform" />
+                <ChevronRight size={14} className="ml-1 group-hover:translate-x-1 transition-transform" />
               </div>
             </div>
           </div>

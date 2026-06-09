@@ -24,7 +24,10 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "./*"
           target: "~/rating-app"
-          rm: false
+          # rm: true so each deploy starts from a clean copy — ratingApp has no
+          # persistent server-side data, and this prevents stale files (e.g. a v3
+          # postcss.config.js) from leaking into the Docker build context.
+          rm: true
 
       - name: Remote SSH Build and Execution
         uses: appleboy/ssh-action@v1.0.3
@@ -38,12 +41,12 @@ jobs:
             # Reconstruct the .env file from GitHub Secrets for the Docker build
             # These are needed at build-time for the Vite frontend
             cat <<EOF > .env
-            VITE_FIREBASE_API_KEY=${{ secrets.FIREBASE_API_KEY }}
-            VITE_FIREBASE_AUTH_DOMAIN=${{ secrets.FIREBASE_AUTH_DOMAIN }}
-            VITE_FIREBASE_PROJECT_ID=${{ secrets.FIREBASE_PROJECT_ID }}
-            VITE_FIREBASE_STORAGE_BUCKET=${{ secrets.FIREBASE_STORAGE_BUCKET }}
-            VITE_FIREBASE_MESSAGING_SENDER_ID=${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}
-            VITE_FIREBASE_APP_ID=${{ secrets.FIREBASE_APP_ID }}
+            VITE_FIREBASE_API_KEY=${{ secrets.VITE_FIREBASE_API_KEY }}
+            VITE_FIREBASE_AUTH_DOMAIN=${{ secrets.VITE_FIREBASE_AUTH_DOMAIN }}
+            VITE_FIREBASE_PROJECT_ID=${{ secrets.VITE_FIREBASE_PROJECT_ID }}
+            VITE_FIREBASE_STORAGE_BUCKET=${{ secrets.VITE_FIREBASE_STORAGE_BUCKET }}
+            VITE_FIREBASE_MESSAGING_SENDER_ID=${{ secrets.VITE_FIREBASE_MESSAGING_SENDER_ID }}
+            VITE_FIREBASE_APP_ID=${{ secrets.VITE_FIREBASE_APP_ID }}
             EOF
             
             # Force a rebuild of the Docker container with the new env vars

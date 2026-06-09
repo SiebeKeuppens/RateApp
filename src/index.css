@@ -1,52 +1,127 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@plugin "tailwindcss-animate";
 
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --primary: 240 5.9% 10%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 240 5.9% 10%;
-    --radius: 0.5rem;
-  }
+/* `dark:` utilities resolve against the attribute the ThemeProvider sets (dark is the default). */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
-  .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
-  }
+/* ===========================================================================
+   Suite design system — "Deep Space Professional"
+   Canonical source: _suite-unification/design-system/globals.css
+   Theming: <html data-app="rating"> + ThemeProvider sets data-theme dark|light
+   =========================================================================== */
+:root,
+[data-theme="dark"] {
+  --surface: #0a0f10;
+  --surface-bright: #232e30;
+  --surface-container-lowest: #000000;
+  --surface-container-low: #0e1416;
+  --surface-container: #131b1c;
+  --surface-container-high: #182123;
+  --surface-container-highest: #1d2729;
+  --on-surface: #dce7ea;
+  --on-surface-variant: #a2adaf;
+  --outline: #6c777a;
+  --outline-variant: #3f4a4c;
+  --primary: #9ccfd8;
+  --on-primary: #0d474e;
+  --primary-container: #255a61;
+  --secondary: #b2cbd0;
+  --tertiary: #accdf0;
+  --error: #fa746f;
+  --on-error: #490006;
+  --success: #7fd1a8;
+  --warning: #e8c97a;
+  --background: var(--surface);
+  --foreground: var(--on-surface);
+  --card: var(--surface-container);
+  --card-foreground: var(--on-surface);
+  --popover: var(--surface-container-highest);
+  --popover-foreground: var(--on-surface);
+  --muted: var(--surface-container-high);
+  --muted-foreground: var(--on-surface-variant);
+  --accent: var(--surface-container-high);
+  --accent-foreground: var(--on-surface);
+  --primary-foreground: var(--on-primary);
+  --secondary-foreground: var(--on-surface);
+  --destructive: var(--error);
+  --destructive-foreground: var(--on-error);
+  --border: var(--outline-variant);
+  --input: var(--surface-container-low);
+  --ring: var(--primary);
+  --radius: 0.25rem;
+  color-scheme: dark;
+}
+
+[data-theme="light"] {
+  --surface: #f4f8f9;
+  --surface-bright: #ffffff;
+  --surface-container-lowest: #ffffff;
+  --surface-container-low: #eef3f4;
+  --surface-container: #ffffff;
+  --surface-container-high: #e7eef0;
+  --surface-container-highest: #dfe8ea;
+  --on-surface: #161d1f;
+  --on-surface-variant: #41494b;
+  --outline: #6c777a;
+  --outline-variant: #c4ced0;
+  --primary: #33666e;
+  --on-primary: #ffffff;
+  --primary-container: #b8ecf5;
+  --secondary: #dde7e9;
+  --tertiary: #3a5d80;
+  --success: #2e6a54;
+  --warning: #9a6a00;
+  --error: #b3261e;
+  --on-error: #ffffff;
+  --input: #ffffff;
+  color-scheme: light;
+}
+
+/* per-app accent: ratingApp = soft aqua-green */
+[data-app="rating"] { --primary: #9fd8c0; --on-primary: #0c3b2e; --primary-container: #1f5244; --ring: #9fd8c0; }
+[data-theme="light"][data-app="rating"] { --primary: #2e6a54; --on-primary: #ffffff; --primary-container: #c4ecdb; --ring: #2e6a54; }
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-bright: var(--surface-bright);
+  --color-surface-container-lowest: var(--surface-container-lowest);
+  --color-surface-container-low: var(--surface-container-low);
+  --color-surface-container: var(--surface-container);
+  --color-surface-container-high: var(--surface-container-high);
+  --color-surface-container-highest: var(--surface-container-highest);
+  --color-on-surface: var(--on-surface);
+  --color-on-surface-variant: var(--on-surface-variant);
+  --color-outline: var(--outline);
+  --color-outline-variant: var(--outline-variant);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-container: var(--primary-container);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-tertiary: var(--tertiary);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 1px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 4px);
+  --radius-xl: calc(var(--radius) + 8px);
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-head: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
 }
 
 @layer base {
@@ -55,30 +130,8 @@
   }
   body {
     @apply bg-background text-foreground antialiased;
+    font-family: var(--font-sans);
   }
 }
 
-@layer utilities {
-  .animate-in {
-    animation-duration: 500ms;
-    animation-fill-mode: both;
-  }
-  
-  .fade-in {
-    animation-name: fadeIn;
-  }
-  
-  .zoom-in-95 {
-    animation-name: zoomIn95;
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-
-  @keyframes zoomIn95 {
-    from { transform: scale(0.95); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-  }
-}
+/* Entrance + dropdown animations are provided by the `tailwindcss-animate` plugin (loaded above). */

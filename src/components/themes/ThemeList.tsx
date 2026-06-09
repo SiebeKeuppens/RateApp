@@ -3,6 +3,7 @@ import { themeService } from '../../services/themeService';
 import { Theme } from '../../types';
 import { ChevronRight, Folder } from 'lucide-react';
 import * as Icons from 'lucide-react';
+import { Card } from '../ui/card';
 
 interface ThemeListProps {
   onSelectTheme: (themeId: string) => void;
@@ -30,15 +31,15 @@ export const ThemeList: React.FC<ThemeListProps> = ({ onSelectTheme }) => {
       {themes.map(theme => {
         // Dynamic icon resolution
         const IconComponent = (Icons as any)[theme.icon || 'Folder'] || Folder;
-        
+
         return (
-          <div 
-            key={theme.id} 
+          <Card
+            key={theme.id}
             onClick={() => onSelectTheme(theme.id)}
-            className="group relative flex flex-col h-full rounded-xl border bg-card text-card-foreground shadow-sm transition-all hover:shadow-md cursor-pointer overflow-hidden"
+            className="group relative flex flex-col h-full shadow-sm transition-all hover:shadow-md cursor-pointer overflow-hidden"
           >
             <div className="aspect-[16/9] bg-muted/50 flex items-center justify-center transition-all duration-500 group-hover:bg-muted/80">
-              <div 
+              <div
                 className="p-6 rounded-full transition-all duration-500 group-hover:scale-110 shadow-sm border bg-background"
                 style={{ color: theme.color || 'currentColor' }}
               >
@@ -57,7 +58,7 @@ export const ThemeList: React.FC<ThemeListProps> = ({ onSelectTheme }) => {
                 <ChevronRight size={14} className="ml-1 group-hover:translate-x-1 transition-transform" />
               </div>
             </div>
-          </div>
+          </Card>
         );
       })}
     </div>

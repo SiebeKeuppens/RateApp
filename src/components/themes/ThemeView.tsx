@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { themeService } from '../../services/themeService';
 import { Theme, RatingObject } from '../../types';
 import { ObjectRating } from '../ratings/ObjectRating';
-import { ArrowLeft, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
+import { Button } from '../ui/button';
 
 interface ThemeViewProps {
   themeId: string;
@@ -25,12 +26,12 @@ export const ThemeView: React.FC<ThemeViewProps> = ({ themeId, onBack }) => {
       ]);
       setTheme(themeData);
       setObjects(objectsData);
-      
+
       if (user) {
         const userRatings = await themeService.getUserRatings(user.uid, themeId);
         setRatedObjects(userRatings);
       }
-      
+
       setLoading(false);
     }
     loadData();
@@ -41,18 +42,20 @@ export const ThemeView: React.FC<ThemeViewProps> = ({ themeId, onBack }) => {
       <div className="w-10 h-10 border-4 border-secondary border-t-primary rounded-full animate-spin"></div>
     </div>
   );
-  
+
   if (!theme) return (
     <div className="text-center py-20">
       <p className="text-muted-foreground uppercase tracking-[0.2em] text-[10px] mb-4 font-bold">Theme not found</p>
-      <button onClick={onBack} className="text-primary font-semibold text-xs uppercase tracking-widest hover:underline">Return home</button>
+      <Button variant="link" onClick={onBack} className="text-xs uppercase tracking-widest font-semibold">
+        Return home
+      </Button>
     </div>
   );
 
   const handleRate = async (objectId: string, score: number) => {
     if (!user) return;
     if (ratedObjects.has(objectId)) return;
-    
+
     try {
       await themeService.addRating({
         themeId,
@@ -60,9 +63,9 @@ export const ThemeView: React.FC<ThemeViewProps> = ({ themeId, onBack }) => {
         userId: user.uid,
         score
       });
-      
+
       setRatedObjects(prev => new Set(prev).add(objectId));
-      
+
       // Update local state for immediate feedback
       setObjects(prev => prev.map(obj => {
         if (obj.id === objectId) {
@@ -82,13 +85,14 @@ export const ThemeView: React.FC<ThemeViewProps> = ({ themeId, onBack }) => {
 
   return (
     <div className="animate-in fade-in duration-700">
-      <button 
+      <Button
+        variant="ghost"
         onClick={onBack}
-        className="flex items-center text-sm font-medium text-muted-foreground hover:text-foreground transition-colors mb-8 group"
+        className="flex items-center text-sm font-medium text-muted-foreground hover:text-foreground mb-8 group px-0"
       >
         <ArrowLeft size={16} className="mr-2 group-hover:-translate-x-1 transition-transform" />
         Back to Collections
-      </button>
+      </Button>
 
       <div className="mb-12">
         <h2 className="text-3xl font-bold tracking-tight mb-3">{theme.name}</h2>
@@ -98,10 +102,10 @@ export const ThemeView: React.FC<ThemeViewProps> = ({ themeId, onBack }) => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {objects.map(obj => (
-          <ObjectRating 
+          <ObjectRating
             key={obj.id}
-            object={obj} 
-            onRate={(score) => handleRate(obj.id, score)} 
+            object={obj}
+            onRate={(score) => handleRate(obj.id, score)}
             hasRated={ratedObjects.has(obj.id)}
           />
         ))}

@@ -9,6 +9,8 @@ jobs:
   deploy:
     name: Build & Deploy
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     
     steps:
       - name: Checkout Code
@@ -22,7 +24,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "./*"
           target: "~/rating-app"
-          rm: true
+          rm: false
 
       - name: Remote SSH Build and Execution
         uses: appleboy/ssh-action@v1.0.3

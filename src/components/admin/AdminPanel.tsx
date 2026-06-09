@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { themeService } from '../../services/themeService';
-import { Theme, RatingObject } from '../../types';
-import { Plus, Trash2, Layout, Box, Loader2, Check } from 'lucide-react';
+import { Theme } from '../../types';
+import { Layout, Box, Loader2, Check } from 'lucide-react';
 import * as Icons from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
+import { Input } from '../ui/input';
+import { Textarea } from '../ui/textarea';
+import { Label } from '../ui/label';
+import { Button } from '../ui/button';
 
 const ICON_LIST = [
   'Folder', 'Camera', 'Music', 'Film', 'Coffee', 'Home', 'Smartphone', 'Monitor',
@@ -37,7 +41,7 @@ export const AdminPanel: React.FC = () => {
   const [themeDesc, setThemeDesc] = useState('');
   const [themeIcon, setThemeIcon] = useState('Folder');
   const [themeColor, setThemeColor] = useState('#2563eb');
-  
+
   // Object Form
   const [selectedThemeId, setSelectedThemeId] = useState('');
   const [objectName, setObjectName] = useState('');
@@ -59,7 +63,7 @@ export const AdminPanel: React.FC = () => {
   const handleCreateTheme = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) return;
-    
+
     try {
       await themeService.addTheme({
         name: themeName,
@@ -104,14 +108,15 @@ export const AdminPanel: React.FC = () => {
         <p className="text-sm text-muted-foreground font-medium">Manage collections and items</p>
       </header>
 
+      {/* Tabs — bespoke tab UI preserved with token classes */}
       <div className="flex space-x-6 mb-10 border-b">
-        <button 
+        <button
           onClick={() => setActiveTab('themes')}
           className={`pb-3 text-sm font-semibold transition-colors ${activeTab === 'themes' ? 'text-primary border-b-2 border-primary' : 'text-muted-foreground hover:text-foreground'}`}
         >
           Themes
         </button>
-        <button 
+        <button
           onClick={() => setActiveTab('objects')}
           className={`pb-3 text-sm font-semibold transition-colors ${activeTab === 'objects' ? 'text-primary border-b-2 border-primary' : 'text-muted-foreground hover:text-foreground'}`}
         >
@@ -127,30 +132,31 @@ export const AdminPanel: React.FC = () => {
             </h3>
             <form onSubmit={handleCreateTheme} className="space-y-6">
               <div className="space-y-2">
-                <label className="text-sm font-medium leading-none">Theme Name</label>
-                <input 
-                  type="text" 
-                  value={themeName} 
+                <Label>Theme Name</Label>
+                <Input
+                  type="text"
+                  value={themeName}
                   onChange={(e) => setThemeName(e.target.value)}
-                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                   placeholder="e.g. Minimalist Architecture"
-                  required
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <label className="text-sm font-medium leading-none">Description</label>
-                <textarea 
-                  value={themeDesc} 
-                  onChange={(e) => setThemeDesc(e.target.value)}
-                  className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                  placeholder="Describe the collection..."
+                  className="h-10 bg-background"
                   required
                 />
               </div>
 
+              <div className="space-y-2">
+                <Label>Description</Label>
+                <Textarea
+                  value={themeDesc}
+                  onChange={(e) => setThemeDesc(e.target.value)}
+                  placeholder="Describe the collection..."
+                  className="bg-background"
+                  required
+                />
+              </div>
+
+              {/* Icon picker — bespoke grid preserved */}
               <div className="space-y-3">
-                <label className="text-sm font-medium leading-none">Select Icon</label>
+                <Label>Select Icon</Label>
                 <div className="grid grid-cols-6 sm:grid-cols-8 gap-2 bg-background p-3 rounded-lg border max-h-48 overflow-y-auto">
                   {ICON_LIST.map((iconName) => {
                     const IconComponent = (Icons as any)[iconName];
@@ -160,8 +166,8 @@ export const AdminPanel: React.FC = () => {
                         type="button"
                         onClick={() => setThemeIcon(iconName)}
                         className={`p-2 rounded-md flex items-center justify-center transition-all ${
-                          themeIcon === iconName 
-                            ? 'bg-primary text-primary-foreground shadow-sm scale-110' 
+                          themeIcon === iconName
+                            ? 'bg-primary text-primary-foreground shadow-sm scale-110'
                             : 'hover:bg-muted text-muted-foreground hover:text-foreground border border-transparent'
                         }`}
                         title={iconName}
@@ -173,8 +179,9 @@ export const AdminPanel: React.FC = () => {
                 </div>
               </div>
 
+              {/* Color picker — bespoke grid preserved */}
               <div className="space-y-3">
-                <label className="text-sm font-medium leading-none">Accent Color</label>
+                <Label>Accent Color</Label>
                 <div className="flex flex-wrap gap-3 bg-background p-3 rounded-lg border">
                   {COLOR_LIST.map((color) => (
                     <button
@@ -190,8 +197,8 @@ export const AdminPanel: React.FC = () => {
                     </button>
                   ))}
                   <div className="flex items-center ml-2 border-l pl-3">
-                    <input 
-                      type="color" 
+                    <input
+                      type="color"
                       value={themeColor}
                       onChange={(e) => setThemeColor(e.target.value)}
                       className="w-7 h-7 rounded-full bg-transparent border-none cursor-pointer p-0"
@@ -200,18 +207,15 @@ export const AdminPanel: React.FC = () => {
                 </div>
               </div>
 
-              <button 
-                type="submit"
-                className="w-full bg-primary text-primary-foreground h-11 rounded-md font-bold text-sm shadow hover:bg-primary/90 transition-colors"
-              >
+              <Button type="submit" className="w-full h-11 font-bold">
                 Deploy Theme
-              </button>
+              </Button>
             </form>
           </section>
 
           <section>
             <h3 className="text-base font-bold tracking-tight mb-6 flex items-center">
-               <Box size={18} className="mr-2 text-primary" /> Existing Themes
+              <Box size={18} className="mr-2 text-primary" /> Existing Themes
             </h3>
             {loading ? (
               <Loader2 className="animate-spin text-muted-foreground" />
@@ -220,8 +224,8 @@ export const AdminPanel: React.FC = () => {
                 {themes.map(theme => (
                   <div key={theme.id} className="p-5 flex justify-between items-center rounded-xl border bg-card shadow-sm hover:border-primary/20 transition-all group">
                     <div className="flex items-center space-x-4">
-                      <div 
-                        className="w-2.5 h-2.5 rounded-full shadow-sm" 
+                      <div
+                        className="w-2.5 h-2.5 rounded-full shadow-sm"
                         style={{ backgroundColor: theme.color || 'currentColor' }}
                       ></div>
                       <div>
@@ -243,9 +247,10 @@ export const AdminPanel: React.FC = () => {
           </h3>
           <form onSubmit={handleCreateObject} className="space-y-6">
             <div className="space-y-2">
-              <label className="text-sm font-medium leading-none">Target Theme</label>
-              <select 
-                value={selectedThemeId} 
+              <Label>Target Theme</Label>
+              {/* Native <select> preserved — no Select dep */}
+              <select
+                value={selectedThemeId}
                 onChange={(e) => setSelectedThemeId(e.target.value)}
                 className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 appearance-none"
               >
@@ -255,22 +260,19 @@ export const AdminPanel: React.FC = () => {
               </select>
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium leading-none">Object Name</label>
-              <input 
-                type="text" 
-                value={objectName} 
+              <Label>Object Name</Label>
+              <Input
+                type="text"
+                value={objectName}
                 onChange={(e) => setObjectName(e.target.value)}
-                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 placeholder="e.g. Concrete Villa"
+                className="h-10 bg-background"
                 required
               />
             </div>
-            <button 
-              type="submit"
-              className="w-full bg-primary text-primary-foreground h-11 rounded-md font-bold text-sm shadow hover:bg-primary/90 transition-colors"
-            >
+            <Button type="submit" className="w-full h-11 font-bold">
               Add Object
-            </button>
+            </Button>
           </form>
         </div>
       )}
